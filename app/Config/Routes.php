@@ -36,6 +36,9 @@ $routes->get('pelanggan/hapus/(:num)','Pelanggan::hapus/$1');
 $routes->get('produk/hapus/(:num)','Produk::hapus/$1');
 $routes->get('supplier/hapus/(:num)','Supplier::hapus/$1');
 $routes->get('peralatan/hapus/(:num)','Peralatan::hapus/$1');
+$routes->get('akun/hapus/(:num)','Akun::hapus/$1');
+
+$routes->resource('penjualan/api/penjualan',['controller' => 'Api\Penjualan']);
 
 /*
  * --------------------------------------------------------------------

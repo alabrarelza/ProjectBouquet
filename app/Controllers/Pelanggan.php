@@ -27,6 +27,7 @@ class Pelanggan extends BaseController
         if ($this->request->getMethod() === 'post' && 
             $this->validate([
                 'nama' => 'required|min_length[3]|max_length[50]',
+                'kode' => 'required|is_unique[pelanggan.kode]',
                 'email' => 'required',
                 'alamat'  => 'required',
                 'no_tlp'  => 'required|exact_length[14]',
@@ -37,11 +38,15 @@ class Pelanggan extends BaseController
                         'min_length' => 'Panjang nama pelanggan tidak boleh kurang dari 3',
                         'max_length' => 'Panjang nama pelanggan tidak boleh lebih dari 50',
                     ],
+                    'kode' => [
+                        'required' => 'Kode pelanggan tidak boleh kosong',
+                        'is_unique' => 'Kode sudah ada',
+                    ],
                     'email' =>[
                         'required' => 'Email pelanggan tidak boleh kosong'
                     ],
                     'alamat' => [
-                        'required' => 'Alamat kos tidak boleh kosong',
+                        'required' => 'Alamat pelanggan tidak boleh kosong',
                     ],
                     'no_tlp' => [
                         'required' => 'Nomor telepon tidak boleh kosong',
@@ -53,21 +58,21 @@ class Pelanggan extends BaseController
         {
             // kalau masuk ke sini berarti sudah sesuai dengan rule yang dikehendaki
             // maka langsung masukkan ke database
-            $db = db_connect();
-            $query = $db->query("SELECT max(kode) as kodeTerbesar FROM pelanggan");
-            // $data = $query->getResultArray();
+            // $db = db_connect();
+            // $query = $db->query("SELECT max(kode) as kodeTerbesar FROM pelanggan");
+            // // $data = $query->getResultArray();
             
-            foreach ($query->getResultArray() as $row) {
-                $kodePelanggan = $row['kodeTerbesar'];
-            }
+            // foreach ($query->getResultArray() as $row) {
+            //     $kodePelanggan = $row['kodeTerbesar'];
+            // }
             
-            $urutan = (int) substr($kodePelanggan, 1, 3);
-            $urutan++;
-            $huruf = "P";
-            $kodePelanggan = $huruf . sprintf("%03s", $urutan);
+            // $urutan = (int) substr($kodePelanggan, 1, 3);
+            // $urutan++;
+            // $huruf = "P";
+            // $kodePelanggan = $huruf . sprintf("%03s", $urutan);
             $pelanggan_model->save([
                 'nama' => $this->request->getPost('nama'),
-                'kode' => $kodePelanggan,
+                'kode' =>  strtoupper($this->request->getPost('kode')),
                 'email'  => $this->request->getPost('email'),
                 'no_tlp'  => $this->request->getPost('no_tlp'),
                 'alamat'  => $this->request->getPost('alamat'),
@@ -128,7 +133,7 @@ class Pelanggan extends BaseController
                         'required' => 'Email pelanggan tidak boleh kosong'
                     ],
                     'alamat' => [
-                        'required' => 'Alamat kos tidak boleh kosong',
+                        'required' => 'Alamat pelanggan tidak boleh kosong',
                     ],
                     'no_tlp' => [
                         'required' => 'Nomor telepon tidak boleh kosong',

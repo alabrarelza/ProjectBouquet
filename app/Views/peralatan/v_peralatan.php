@@ -69,7 +69,7 @@
                     <td><?= $no++ ?></td>
                     <td><?= $row['kode'] ?></td>
                     <td><?= $row['nama'] ?></td>
-                    <td><?= $row['harga'] ?></td>
+                    <td><?php echo format_rupiah($row['harga']);?></td>
                     <td><?= $row['tanggal_beli'] ?></td>
                     <td><?= word_limiter($row['keterangan'], 10);  ?></td>
                     <td>

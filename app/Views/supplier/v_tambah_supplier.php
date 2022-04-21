@@ -5,12 +5,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>General Form</h1>
+            <h1>Tambah Data</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">General Form</li>
+              <li class="breadcrumb-item active">Tambah Data</li>
             </ol>
           </div>
         </div>
@@ -33,7 +33,37 @@
               <form action="<?=base_url('supplier/tambah')?>" method="post" novalidate>
                 <div class="card-body">
                 <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">Nama</label>
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Kode Supplier</label>
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" id="kode" placeholder="Kode" name="kode" value="<?= set_value('kode')?>">
+                      <div class="invalid-feedback" id="errorkode"></div>
+                        <?php 
+                        // contoh mendapatkan error per komponen
+                        if(isset($validation)){
+                            if($validation->getError('kode')) {?>
+                                <script>
+                                    // modifikasi elemen class input form untuk nama_kos menjadi is-invalid
+                                    document.getElementById('kode').setAttribute("class", "form-control is-invalid");
+                                    document.getElementById('errorkode').innerHTML = "<?=$validation->getError('kode'); ?>";
+                                    // serta tambahkan div class invalid
+                                </script>
+                            <?php 
+                            }else{
+                                // tidak ada error di nama_kos maka nilai is-invalid dihapuskan
+                                ?>
+                                <script>
+                                    // modifikasi elemen class input form untuk nama_kos menjadi is-valid
+                                    document.getElementById('kode').setAttribute("class", "form-control is-valid");
+                                    document.getElementById('errorkode').innerHTML = "";
+                                    // serta tambahkan div class is valid
+                                </script>
+                                <?php
+                            }
+                        }?>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Nama Supplier</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="nama" placeholder="Nama" name="nama" value="<?= set_value('nama')?>">
                       <div class="invalid-feedback" id="errornama"></div>
@@ -95,7 +125,7 @@
                   <div class="form-group row">
                      <label for="inputEmail3" class="col-sm-2 col-form-label">Alamat</label>
                      <div class="col-sm-10">
-                        <textarea class="form-control" id="alamat" name="alamat" rows="3" placeholder="Alamat ..."></textarea>
+                        <textarea class="form-control" id="alamat" name="alamat" rows="3" placeholder="Alamat ..."><?= set_value('alamat')?></textarea>
                         <div class="invalid-feedback" id="alamattlp"></div>
                         <?php 
                         // contoh mendapatkan error per komponen
@@ -125,7 +155,7 @@
                   <div class="form-group row">
                      <label for="inputEmail3" class="col-sm-2 col-form-label">Keterangan</label>
                      <div class="col-sm-10">
-                        <textarea class="form-control" id="keterangan" name="keterangan" rows="3" placeholder="Keterangan ..."></textarea>
+                        <textarea class="form-control" id="keterangan" name="keterangan" rows="3" placeholder="Keterangan ..."><?= set_value('keterangan')?></textarea>
                         <div class="invalid-feedback" id="errorketerangan"></div>
                         <?php 
                         // contoh mendapatkan error per komponen

@@ -59,7 +59,44 @@
 <script src="<?= base_url('dist/js/pages/dashboard.js') ?>"></script>
 <!-- Jquery Masking -->
 <script src="<?= base_url('jquery/jquery.mask.js')?>"></script>
+<script>
+  $(function() {
+    var harga_penjualan = document.getElementById('harga_penjualan');
+    var total_amount = function() {
+      var sum = 0;
+      var harga = $('#harga').val();
+      $('#jumlah').each(function() {
+        var jumlah = $(this).val();
+        if (jumlah != 0) {
+          sum = jumlah * harga;
+        }
+      });
 
+      $('#harga_penjualan').val(sum);
+      
+    }
+
+    $('#jumlah').keyup(function(){
+      total_amount();
+    })
+    
+  })
+</script>
+<script>
+  $('#id_produk').on('change', (event) => {
+      getProduk(event.target.value).then(barang => {
+          $('#harga').val(barang.harga);
+      });
+  });
+
+  async function getProduk(id) {
+    let response = await fetch('api/penjualan/'+id);
+    let data = await response.json();
+
+    return data;
+  }
+
+</script>
 <script>
   function show(){
     $(".tanggal_beli").datepicker({

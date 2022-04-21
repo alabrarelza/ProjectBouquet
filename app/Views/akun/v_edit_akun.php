@@ -5,12 +5,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Tambah Data</h1>
+            <h1>Ubah Data</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Tambah Data</li>
+              <li class="breadcrumb-item active">Ubah Data</li>
             </ol>
           </div>
         </div>
@@ -26,16 +26,37 @@
             <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Form Tambah Pelanggan</h3>
+                <h3 class="card-title">Form Ubah Pelanggan</h3>
               </div>
               <!-- /.card-header -->
+              <!-- Looping data kosan -->
+                <?php 
+                    foreach ($data_akun as $row) {
+                        $id = $row->id;
+                        $kode = $row->kode; 
+                        $nama = $row->nama; 
+                        $header = $row->header; 
+                    }
+                ?>
               <!-- form start -->
-              <form action="<?=base_url('pelanggan/tambah')?>" method="post" novalidate>
+              <form action="<?=base_url('akun/update')?>" method="post">
+              <?= csrf_field() ?>
                 <div class="card-body">
                 <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">Kode Pelanggan</label>
-                    <div class="col-sm-3">
-                      <input type="text" class="form-control" id="kode" placeholder="Kode" name="kode" value="<?= set_value('kode')?>">
+                    <div class="col-sm-2">
+                      <input type="hidden" class="form-control" id="id" name="id" value="<?=$id?>" readonly>                         
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Kode Akun</label>
+                    <div class="col-sm-10">
+                        <?php
+                            //jika set value namakosan tidak kosong maka isi $nama diganti dengan isian dari user
+                            if(strlen(set_value('kode'))>0){
+                            $nama = set_value('kode');
+                            }
+                        ?>
+                      <input type="text" class="form-control" id="kode" placeholder="Kode" name="kode" value="<?=$kode?>">
                       <div class="invalid-feedback" id="errorkode"></div>
                         <?php 
                         // contoh mendapatkan error per komponen
@@ -63,9 +84,15 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">Nama Pelanggan</label>
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Nama Akun</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="nama" placeholder="Nama" name="nama" value="<?= set_value('nama')?>">
+                        <?php
+                            //jika set value namakosan tidak kosong maka isi $nama diganti dengan isian dari user
+                            if(strlen(set_value('nama'))>0){
+                            $nama = set_value('nama');
+                            }
+                        ?>
+                      <input type="text" class="form-control" id="nama" placeholder="Nama" name="nama" value="<?=$nama?>">
                       <div class="invalid-feedback" id="errornama"></div>
                         <?php 
                         // contoh mendapatkan error per komponen
@@ -93,18 +120,24 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Header</label>
                      <div class="col-sm-10">
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?= set_value('email')?>">
-                        <div class="invalid-feedback" id="erroremail"></div>
+                        <?php
+                            //jika set value namakosan tidak kosong maka isi $nama diganti dengan isian dari user
+                            if(strlen(set_value('header'))>0){
+                            $header = set_value('header');
+                            }
+                        ?>
+                        <input type="text" class="form-control" id="header" name="header" placeholder="Header" value="<?=$header?>">
+                        <div class="invalid-feedback" id="errorheader"></div>
                         <?php 
                         // contoh mendapatkan error per komponen
                         if(isset($validation)){
-                            if($validation->getError('email')) {?>
+                            if($validation->getError('header')) {?>
                                 <script>
                                     // modifikasi elemen class input form untuk nama_kos menjadi is-invalid
-                                    document.getElementById('email').setAttribute("class", "form-control is-invalid");
-                                    document.getElementById('erroremail').innerHTML = "<?=$validation->getError('email'); ?>";
+                                    document.getElementById('header').setAttribute("class", "form-control is-invalid");
+                                    document.getElementById('errorheader').innerHTML = "<?=$validation->getError('header'); ?>";
                                     // serta tambahkan div class invalid
                                 </script>
                             <?php 
@@ -113,8 +146,8 @@
                                 ?>
                                 <script>
                                     // modifikasi elemen class input form untuk nama_kos menjadi is valid
-                                    document.getElementById('email').setAttribute("class", "form-control is-valid");
-                                    document.getElementById('erroremail').innerHTML = "";
+                                    document.getElementById('header').setAttribute("class", "form-control is-valid");
+                                    document.getElementById('errorheader').innerHTML = "";
                                     // serta tambahkan div class invalid
                                 </script>
                                 <?php
@@ -122,66 +155,6 @@
                         }?> 
                     </div>
                 </div>
-                  <div class="form-group row">
-                     <label for="inputEmail3" class="col-sm-2 col-form-label">No Telepon</label>
-                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="no_tlp" name="no_tlp" placeholder="No Telepon" value="<?= set_value('no_tlp')?>">
-                        <div class="invalid-feedback" id="errortlp"></div>
-                        <?php 
-                        // contoh mendapatkan error per komponen
-                        if(isset($validation)){
-                            if($validation->getError('no_tlp')) {?>
-                                <script>
-                                    // modifikasi elemen class input form untuk nama_kos menjadi is-invalid
-                                    document.getElementById('no_tlp').setAttribute("class", "form-control is-invalid");
-                                    document.getElementById('errortlp').innerHTML = "<?=$validation->getError('no_tlp'); ?>";
-                                    // serta tambahkan div class invalid
-                                </script>
-                            <?php 
-                            }else{
-                                // tidak ada error di nama_kos maka nilai is-invalid dihapuskan
-                                ?>
-                                <script>
-                                    // modifikasi elemen class input form untuk nama_kos menjadi is valid
-                                    document.getElementById('no_tlp').setAttribute("class", "form-control is-valid");
-                                    document.getElementById('errortlp').innerHTML = "";
-                                    // serta tambahkan div class invalid
-                                </script>
-                                <?php
-                            }
-                        }?> 
-                     </div>
-                  </div>
-                  <div class="form-group row">
-                     <label for="inputEmail3" class="col-sm-2 col-form-label">Alamat</label>
-                     <div class="col-sm-10">
-                        <textarea class="form-control" id="alamat" name="alamat" rows="3" placeholder="Alamat ..."><?= set_value('alamat')?></textarea>
-                        <div class="invalid-feedback" id="alamattlp"></div>
-                        <?php 
-                        // contoh mendapatkan error per komponen
-                        if(isset($validation)){
-                            if($validation->getError('alamat')) {?>
-                                <script>
-                                    // modifikasi elemen class input form untuk nama_kos menjadi is-invalid
-                                    document.getElementById('alamat').setAttribute("class", "form-control is-invalid");
-                                    document.getElementById('alamattlp').innerHTML = "<?=$validation->getError('alamat'); ?>";
-                                    // serta tambahkan div class invalid
-                                </script>
-                            <?php 
-                            }else{
-                                // tidak ada error di nama_kos maka nilai is-invalid dihapuskan
-                                ?>
-                                <script>
-                                    // modifikasi elemen class input form untuk nama_kos menjadi is valid
-                                    document.getElementById('alamat').setAttribute("class", "form-control is-valid");
-                                    document.getElementById('alamattlp').innerHTML = "";
-                                    // serta tambahkan div class invalid
-                                </script>
-                                <?php
-                            }
-                        }?>
-                     </div>
-                    </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">

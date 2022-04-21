@@ -10,7 +10,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">DataTables Supplier</li>
+              <li class="breadcrumb-item active">DataTables Penjualan</li>
             </ol>
           </div>
         </div>
@@ -41,7 +41,7 @@
               <div class="card-header">
                 <h3 class="card-title">DataTable with minimal features & hover style</h3>
                 <div class="card-tools">
-                    <a href="<?= base_url('supplier/tambah') ?>" type="button" class="btn btn-primary btn-sm">
+                    <a href="<?= base_url('penjualan/tambah') ?>" type="button" class="btn btn-primary btn-sm">
                     <i class="fas fa-plus"></i>Tambah</a>
                 </div>
               </div>
@@ -53,28 +53,29 @@
                   <thead>
                   <tr>
                     <th>No</th>
-                    <th>Kode Supplier</th>
-                    <th>Nama Supplier</th>
-                    <th>No Telepon</th>
-                    <th>Alamat</th>
-                    <th>Keterangan</th>
+                    <th>Nama Pelanggan</th>
+                    <th>Barang Penjualan</th>
+                    <th>Ukuran</th>
+                    <th>Jumlah</th>
+                    <th>Harga Barang</th>
+                    <th>Harga Penjualan</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
                   <?php
                   $no = 1;  
-                  foreach($data_supplier as $row): ?>
+                  foreach($data_penjualan as $row): ?>
                   <tr>
                     <td><?= $no++ ?></td>
-                    <td><?= $row['kode'] ?></td>
-                    <td><?= $row['nama'] ?></td>
-                    <td><?= $row['no_tlp'] ?></td>
-                    <td><?= word_limiter($row['alamat'], 10);  ?></td>
-                    <td><?= word_limiter($row['keterangan'], 10);  ?></td>
+                    <td><?= $row->nama_pelanggan ?></td>
+                    <td><?= $row->nama_produk ?></td>
+                    <td><?= $row->ukuran_bouquet ?></td>
+                    <td><?= $row->jumlah ?></td>
+                    <td><?php echo format_rupiah($row->harga_bouquet);  ?></td>
+                    <td><?php echo format_rupiah($row->harga_penjualan);  ?></td>
                     <td>
-                    <a href="<?=base_url('supplier/lihatData/'.$row['id'])?>" class="btn btn-primary btn-sm">Ubah</a>
-                    <button type="button" class="confirm-delete btn btn-danger btn-sm" value="<?= $row['id']; ?>">Hapus</button>
+                    <a href="<?=base_url('penjualan/lihatData/'.$row->id)?>" class="btn btn-primary btn-sm">Ubah</a>
                     </td>
                   </tr>
                   <?php endforeach; ?>
@@ -95,37 +96,3 @@
   </div>
   <!-- /.content-wrapper -->
   <!-- Akhir Jquery Masking -->
-  <script>
-        $(document).ready(function(){
-          $('.confirm-delete').click(function (e){
-            e.preventDefault();
-            var id = $(this).val();
-              swal({
-                title: "Apakah anda yakin?",
-                text: "Setelah dihapus, Anda tidak akan dapat memulihkan file imajiner ini!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-              })
-              .then((willDelete) => {
-                if (willDelete) {
-                  $.ajax({
-                    url: "/supplier/hapus/"+id,
-                    success: function(response) {
-                      swal({
-                        title: response.status,
-                        text: response.status_text,
-                        icon: response.status_icon,
-                        buttons: "OK",
-                      }).then((confirmed) => {
-                          window.location.reload();
-                      });
-                    }
-                  });
-                } else {
-                  // swal("Your imaginary file is safe!");
-                }
-              });
-          });
-        });
-    </script>

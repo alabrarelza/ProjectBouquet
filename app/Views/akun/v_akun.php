@@ -10,7 +10,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">DataTables Supplier</li>
+              <li class="breadcrumb-item active">DataTables Pelanggan</li>
             </ol>
           </div>
         </div>
@@ -41,7 +41,7 @@
               <div class="card-header">
                 <h3 class="card-title">DataTable with minimal features & hover style</h3>
                 <div class="card-tools">
-                    <a href="<?= base_url('supplier/tambah') ?>" type="button" class="btn btn-primary btn-sm">
+                    <a href="<?= base_url('akun/tambah') ?>" type="button" class="btn btn-primary btn-sm">
                     <i class="fas fa-plus"></i>Tambah</a>
                 </div>
               </div>
@@ -53,27 +53,23 @@
                   <thead>
                   <tr>
                     <th>No</th>
-                    <th>Kode Supplier</th>
-                    <th>Nama Supplier</th>
-                    <th>No Telepon</th>
-                    <th>Alamat</th>
-                    <th>Keterangan</th>
+                    <th>Kode Akun</th>
+                    <th>Nama Akun</th>
+                    <th>Header</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
                   <?php
                   $no = 1;  
-                  foreach($data_supplier as $row): ?>
+                  foreach($data_akun as $row): ?>
                   <tr>
                     <td><?= $no++ ?></td>
                     <td><?= $row['kode'] ?></td>
                     <td><?= $row['nama'] ?></td>
-                    <td><?= $row['no_tlp'] ?></td>
-                    <td><?= word_limiter($row['alamat'], 10);  ?></td>
-                    <td><?= word_limiter($row['keterangan'], 10);  ?></td>
+                    <td><?= $row['header'] ?></td>
                     <td>
-                    <a href="<?=base_url('supplier/lihatData/'.$row['id'])?>" class="btn btn-primary btn-sm">Ubah</a>
+                    <a href="<?=base_url('akun/lihatData/'.$row['id'])?>" class="btn btn-primary btn-sm">Ubah</a>
                     <button type="button" class="confirm-delete btn btn-danger btn-sm" value="<?= $row['id']; ?>">Hapus</button>
                     </td>
                   </tr>
@@ -110,7 +106,7 @@
               .then((willDelete) => {
                 if (willDelete) {
                   $.ajax({
-                    url: "/supplier/hapus/"+id,
+                    url: "/akun/hapus/"+id,
                     success: function(response) {
                       swal({
                         title: response.status,

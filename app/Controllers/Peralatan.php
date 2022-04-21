@@ -9,6 +9,7 @@ class Peralatan extends BaseController
     public function index()
     {
         helper('text');
+
         $peralatan_model = model(Peralatans::class);
         $dataperalatan= $peralatan_model->getPeralatan();
         echo view('struktur/header');
@@ -29,24 +30,30 @@ class Peralatan extends BaseController
         if ($this->request->getMethod() === 'post' && 
             $this->validate([
                 'nama' => 'required|min_length[3]|max_length[50]',
+                'kode' => 'required|is_unique[peralatan_bahan.kode]',
                 'harga' => 'required',
-                'tanggal_beli' => 'required',
+                'tanggal_beli' => 'required|exact_length[10]',
                 'keterangan'  => 'required',
                 ],
                 [   //List Custom Pesan Error
                     'nama' => [
-                        'required' => 'Nama supplier tidak boleh kosong',
-                        'min_length' => 'Panjang nama supplier tidak boleh kurang dari 3',
-                        'max_length' => 'Panjang nama supplier tidak boleh lebih dari 50',
+                        'required' => 'Nama peralatan tidak boleh kosong',
+                        'min_length' => 'Panjang nama peralatan tidak boleh kurang dari 3',
+                        'max_length' => 'Panjang nama peralatan tidak boleh lebih dari 50',
+                    ],
+                    'kode' => [
+                        'required' => 'Kode peralatan tidak boleh kosong',
+                        'is_unique' => 'Kode sudah ada',
                     ],
                     'keterangan' => [
-                        'required' => 'Keterangan supplier tidak boleh kosong',
+                        'required' => 'Keterangan peralatan tidak boleh kosong',
                     ],
                     'harga' => [
-                        'required' => 'Harga supplier tidak boleh kosong',
+                        'required' => 'Harga peralatan tidak boleh kosong',
                     ],
                     'tanggal_beli' => [
-                        'required' => 'Tanggal supplier tidak boleh kosong',
+                        'required' => 'Tanggal peralatan tidak boleh kosong',
+                        'exact_length' => 'Tanggal peralatan tidak sesuai',
                     ],
                 ]
             )
@@ -54,21 +61,21 @@ class Peralatan extends BaseController
         {
             // kalau masuk ke sini berarti sudah sesuai dengan rule yang dikehendaki
             // maka langsung masukkan ke database
-            $db = db_connect();
-            $query = $db->query("SELECT max(kode) as kodeTerbesar FROM peralatan_bahan");
-            // $data = $query->getResultArray();
+            // $db = db_connect();
+            // $query = $db->query("SELECT max(kode) as kodeTerbesar FROM peralatan_bahan");
+            // // $data = $query->getResultArray();
             
-            foreach ($query->getResultArray() as $row) {
-                $kodePeralatan = $row['kodeTerbesar'];
-            }
+            // foreach ($query->getResultArray() as $row) {
+            //     $kodePeralatan = $row['kodeTerbesar'];
+            // }
             
-            $urutan = (int) substr($kodePeralatan, 3, 6);
-            $urutan++;
-            $huruf = "PLT";
-            $kodePeralatan = $huruf . sprintf("%03s", $urutan);
+            // $urutan = (int) substr($kodePeralatan, 3, 6);
+            // $urutan++;
+            // $huruf = "PLT";
+            // $kodePeralatan = $huruf . sprintf("%03s", $urutan);
             $peralatan_model->save([
                 'nama' => $this->request->getPost('nama'),
-                'kode' => $kodePeralatan,
+                'kode' => strtoupper($this->request->getPost('kode')),
                 'harga'  => $this->request->getPost('harga'),
                 'tanggal_beli'  => $this->request->getPost('tanggal_beli'),
                 'keterangan'  => $this->request->getPost('keterangan'),
@@ -121,18 +128,18 @@ class Peralatan extends BaseController
                 ],
                 [   //List Custom Pesan Error
                     'nama' => [
-                        'required' => 'Nama supplier tidak boleh kosong',
-                        'min_length' => 'Panjang nama supplier tidak boleh kurang dari 3',
-                        'max_length' => 'Panjang nama supplier tidak boleh lebih dari 50',
+                        'required' => 'Nama peralatan tidak boleh kosong',
+                        'min_length' => 'Panjang nama peralatan tidak boleh kurang dari 3',
+                        'max_length' => 'Panjang nama peralatan tidak boleh lebih dari 50',
                     ],
                     'keterangan' => [
-                        'required' => 'Keterangan supplier tidak boleh kosong',
+                        'required' => 'Keterangan peralatan tidak boleh kosong',
                     ],
                     'harga' => [
-                        'required' => 'Harga supplier tidak boleh kosong',
+                        'required' => 'Harga peralatan tidak boleh kosong',
                     ],
                     'tanggal_beli' => [
-                        'required' => 'Tanggal supplier tidak boleh kosong',
+                        'required' => 'Tanggal peralatan tidak boleh kosong',
                     ],
                 ]
             )

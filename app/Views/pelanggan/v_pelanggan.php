@@ -54,7 +54,7 @@
                   <tr>
                     <th>No</th>
                     <th>Kode Pelanggan</th>
-                    <th>Nama</th>
+                    <th>Nama Pelanggan</th>
                     <th>Email</th>
                     <th>No Tlp</th>
                     <th>Alamat</th>
@@ -102,7 +102,7 @@
             var id = $(this).val();
               swal({
                 title: "Apakah anda yakin?",
-                text: "Setelah dihapus, Anda tidak akan dapat memulihkan file imajiner ini!",
+                text: "Setelah dihapus, Anda tidak akan dapat memulihkan data ini!",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,

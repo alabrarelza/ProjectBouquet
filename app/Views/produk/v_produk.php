@@ -54,7 +54,7 @@
                   <tr>
                     <th>No</th>
                     <th>Kode Produk</th>
-                    <th>Nama</th>
+                    <th>Nama Produk</th>
                     <th>Harga</th>
                     <th>Keterangan</th>
                     <th>Aksi</th>
@@ -68,7 +68,7 @@
                     <td><?= $no++ ?></td>
                     <td><?= $row['kode'] ?></td>
                     <td><?= $row['nama'] ?></td>
-                    <td>Rp. <?= $row['harga'] ?></td>
+                    <td><?php echo format_rupiah($row['harga']);  ?></td>
                     <td><?= word_limiter($row['keterangan'], 10);  ?></td>
                     <td>
                     <a href="<?=base_url('produk/lihatData/'.$row['id'])?>" class="btn btn-primary btn-sm">Ubah</a>

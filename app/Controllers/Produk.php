@@ -9,6 +9,7 @@ class Produk extends BaseController
     public function index()
     {
         helper('text');
+
         $produk = model(Produks::class);
         $dataproduk= $produk->getProduk();
         echo view('struktur/header');
@@ -29,6 +30,7 @@ class Produk extends BaseController
         if ($this->request->getMethod() === 'post' && 
             $this->validate([
                 'nama' => 'required|min_length[3]|max_length[50]',
+                'kode' => 'required|is_unique[produk.kode]',
                 'harga' => 'required',
                 'keterangan'  => 'required',
                 ],
@@ -37,6 +39,10 @@ class Produk extends BaseController
                         'required' => 'Nama produk tidak boleh kosong',
                         'min_length' => 'Panjang nama produk tidak boleh kurang dari 3',
                         'max_length' => 'Panjang nama produk tidak boleh lebih dari 50',
+                    ],
+                    'kode' => [
+                        'required' => 'Kode produk tidak boleh kosong',
+                        'is_unique' => 'Kode sudah ada',
                     ],
                     'harga' =>[
                         'required' => 'Harga produk tidak boleh kosong'
@@ -50,21 +56,21 @@ class Produk extends BaseController
         {
             // kalau masuk ke sini berarti sudah sesuai dengan rule yang dikehendaki
             // maka langsung masukkan ke database
-            $db = db_connect();
-            $query = $db->query("SELECT max(kode) as kodeTerbesar FROM produk");
-            // $data = $query->getResultArray();
+            // $db = db_connect();
+            // $query = $db->query("SELECT max(kode) as kodeTerbesar FROM produk");
+            // // $data = $query->getResultArray();
             
-            foreach ($query->getResultArray() as $row) {
-                $kodeProduk = $row['kodeTerbesar'];
-            }
+            // foreach ($query->getResultArray() as $row) {
+            //     $kodeProduk = $row['kodeTerbesar'];
+            // }
             
-            $urutan = (int) substr($kodeProduk, 3, 6);
-            $urutan++;
-            $huruf = "BRG";
-            $kodeProduk = $huruf . sprintf("%03s", $urutan);
+            // $urutan = (int) substr($kodeProduk, 3, 6);
+            // $urutan++;
+            // $huruf = "BRG";
+            // $kodeProduk = $huruf . sprintf("%03s", $urutan);
             $produk_model->save([
                 'nama' => $this->request->getPost('nama'),
-                'kode' => $kodeProduk,
+                'kode' =>  strtoupper($this->request->getPost('kode')),
                 'harga'  => $this->request->getPost('harga'),
                 'keterangan'  => $this->request->getPost('keterangan'),
             ]);
@@ -145,7 +151,7 @@ class Produk extends BaseController
             $produk = $produk_model->getProdukBasedOnId($_POST['id']);
             echo view('produk/v_edit_produk', [
                                     'title' => 'Ubah Produk',
-                                    'data_pelanggan' => $produk,
+                                    'data_produk' => $produk,
                                     'validation' => $this->validator,
                                 ]
                     );

@@ -29,6 +29,7 @@ class Supplier extends BaseController
         if ($this->request->getMethod() === 'post' && 
             $this->validate([
                 'nama' => 'required|min_length[3]|max_length[50]',
+                'kode' => 'required|is_unique[supplier.kode]',
                 'no_tlp'  => 'required|exact_length[14]',
                 'alamat' => 'required',
                 'keterangan'  => 'required',
@@ -38,6 +39,10 @@ class Supplier extends BaseController
                         'required' => 'Nama supplier tidak boleh kosong',
                         'min_length' => 'Panjang nama supplier tidak boleh kurang dari 3',
                         'max_length' => 'Panjang nama supplier tidak boleh lebih dari 50',
+                    ],
+                    'kode' => [
+                        'required' => 'Kode supplier tidak boleh kosong',
+                        'is_unique' => 'Kode sudah ada',
                     ],
                     'no_tlp' =>[
                         'required' => 'Nomor telepon tidak boleh kosong',
@@ -55,21 +60,21 @@ class Supplier extends BaseController
         {
             // kalau masuk ke sini berarti sudah sesuai dengan rule yang dikehendaki
             // maka langsung masukkan ke database
-            $db = db_connect();
-            $query = $db->query("SELECT max(kode) as kodeTerbesar FROM supplier");
-            // $data = $query->getResultArray();
+            // $db = db_connect();
+            // $query = $db->query("SELECT max(kode) as kodeTerbesar FROM supplier");
+            // // $data = $query->getResultArray();
             
-            foreach ($query->getResultArray() as $row) {
-                $kodeSupplier = $row['kodeTerbesar'];
-            }
+            // foreach ($query->getResultArray() as $row) {
+            //     $kodeSupplier = $row['kodeTerbesar'];
+            // }
             
-            $urutan = (int) substr($kodeSupplier, 1, 3);
-            $urutan++;
-            $huruf = "S";
-            $kodeSupplier = $huruf . sprintf("%03s", $urutan);
+            // $urutan = (int) substr($kodeSupplier, 1, 3);
+            // $urutan++;
+            // $huruf = "S";
+            // $kodeSupplier = $huruf . sprintf("%03s", $urutan);
             $supplier_model->save([
                 'nama' => $this->request->getPost('nama'),
-                'kode' => $kodeSupplier,
+                'kode' => strtoupper($this->request->getPost('kode')),
                 'no_tlp'  => $this->request->getPost('no_tlp'),
                 'alamat'  => $this->request->getPost('alamat'),
                 'keterangan'  => $this->request->getPost('keterangan'),

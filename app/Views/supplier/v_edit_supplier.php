@@ -5,12 +5,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>General Form</h1>
+            <h1>Ubah Data</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">General Form</li>
+              <li class="breadcrumb-item active">Ubah Data</li>
             </ol>
           </div>
         </div>
@@ -26,7 +26,7 @@
             <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Form Tambah Supplier</h3>
+                <h3 class="card-title">Form Ubah Supplier</h3>
               </div>
               <!-- /.card-header -->
               <!-- Looping data kosan -->
@@ -50,13 +50,13 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">Kode</label>
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Kode Supplier</label>
                     <div class="col-sm-2">
                       <input type="text" class="form-control" id="kode" name="kode" value="<?=$kode?>" readonly>                         
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">Nama</label>
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Nama Supplier</label>
                     <div class="col-sm-10">
                         <?php
                             //jika set value namakosan tidak kosong maka isi $nama diganti dengan isian dari user
